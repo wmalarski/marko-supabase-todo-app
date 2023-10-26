@@ -1,0 +1,16 @@
+import { buttonClass, type ButtonClassProps } from "./recipes";
+export type Input = Marko.Input<"button"> & ButtonClassProps;
+
+<const/{ color, isLoading, shape, size, variant, ...rest }=input/>
+
+<const/recipeResult=buttonClass({
+  color,
+  isLoading,
+  shape,
+  size,
+  variant,
+})/>
+
+<button class=recipeResult ...rest>
+  <${input.renderBody}/>
+</button>
