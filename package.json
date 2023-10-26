@@ -4,10 +4,17 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "marko": "^5.31.0"
+    "@marko/tags-api-preview": "^0.7.2",
+    "clsx": "^2.0.0",
+    "marko": "^5.31.13",
+    "tailwind-merge": "^1.14.0",
+    "valibot": "^0.19.0"
   },
   "devDependencies": {
-    "@marko/run": "^0.2.0"
+    "@marko/run": "^0.2.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5"
   },
   "private": true,
   "scripts": {
