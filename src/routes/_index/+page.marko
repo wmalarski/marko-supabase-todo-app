@@ -12,5 +12,24 @@
     <app-button color="primary" onClick=onClick>
       Hello
     </app-button>
+
+    <const/onSubmit=(
+      (event: Event) => {
+        event.preventDefault();
+        console.log("HERE");
+      }
+    )/>
+
+    <form onSubmit=onSubmit>
+      <app-text-field>
+        <@label for="email">
+          Email
+        </@label>
+        <@field variant="bordered" id="email" name="email" type="email"/>
+      </app-text-field>
+      <app-button color="primary">
+        Submit
+      </app-button>
+    </form>
   </main>
 </div>

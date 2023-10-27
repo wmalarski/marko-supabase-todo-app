@@ -45,5 +45,4 @@ export const buttonClass = twCva("btn no-animation flex items-center gap-1", {
     },
   },
 });
-
 export type ButtonClassProps = VariantProps<typeof buttonClass>;

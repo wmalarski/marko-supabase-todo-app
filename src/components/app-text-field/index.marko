@@ -1,0 +1,42 @@
+import {
+  type FormControlClassProps,
+  type TextFieldDescriptionClassProps,
+  type TextFieldErrorMessageClassProps,
+  type TextFieldInputClassProps,
+  type TextFieldLabelClassProps,
+  formControlClass,
+  textFieldDescriptionClass,
+  textFieldErrorMessageClass,
+  textFieldInputClass,
+  textFieldLabelClass,
+} from "./recipes";
+export type Input = Marko.Input<"fieldset"> & FormControlClassProps & {
+  description?: Marko.Input<"span"> & TextFieldDescriptionClassProps;
+  error?: Marko.Input<"span"> & TextFieldErrorMessageClassProps;
+  field: Marko.Input<"input"> & TextFieldInputClassProps;
+  label?: Marko.Input<"label"> & TextFieldLabelClassProps;
+};
+
+<const/{ class: className, label, field, description, error, ...rest }=input/>
+
+<fieldset ...rest class=formControlClass({ className })>
+  <if=label>
+    <const/{ class: className, ...rest } = label/>
+    <label ...rest class=textFieldLabelClass({ className })>
+      <${label.renderBody}/>
+    </label>
+  </if>
+
+  <const/{ class: className, color, size, variant, ...rest } = field/>
+  <input ...rest class=textFieldInputClass({ className, color, size, variant })>
+
+  <if=description>
+    <const/{ class: className, ...rest } = description/>
+    <span ...rest class=textFieldDescriptionClass({ className })/>
+  </if>
+
+  <if=error>
+    <const/{ class: className, ...rest } = error/>
+    <span ...rest class=textFieldErrorMessageClass({ className })/>
+  </if>
+</fieldset>
