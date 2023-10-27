@@ -9,6 +9,13 @@ npm install
 npm run dev
 ```
 
+## Environmental variables
+
+```graphql
+VITE_PUBLIC_SUPABASE_URL=
+VITE_PUBLIC_SUPABASE_ANON_KEY=
+```
+
 ## Overview
 
 This project is powered by [@marko/run](https://github.com/marko-js/run).

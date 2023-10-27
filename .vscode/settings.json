@@ -3,6 +3,7 @@
     "clsx",
     "daisyui",
     "marko",
+    "pkce",
     "supabase",
     "tailwindcss",
     "valibot"
