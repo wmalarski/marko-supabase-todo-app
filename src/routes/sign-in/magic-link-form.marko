@@ -1,0 +1,28 @@
+<form
+  class="flex flex-col gap-6"
+  action="/sign-in/api/magic-link"
+  method="POST"
+>
+  <h2 class="text-xl">
+    Send magic link
+  </h2>
+
+  <div class="flex flex-col gap-4">
+    <app-text-field>
+      <@label for="email">
+        Email
+      </@label>
+      <@field
+        placeholder="Email"
+        variant="bordered"
+        id="email"
+        name="email"
+        type="email"
+      />
+    </app-text-field>
+
+    <app-button color="primary">
+      Send
+    </app-button>
+  </div>
+</form>
