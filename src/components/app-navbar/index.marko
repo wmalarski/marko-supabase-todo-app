@@ -1,0 +1,40 @@
+import {
+  type NavbarClassProps,
+  type NavbarStartClassProps,
+  type NavbarCenterClassProps,
+  type NavbarEndClassProps,
+  navbarClass,
+  navbarStartClass,
+  navbarCenterClass,
+  navbarEndClass,
+} from "./recipes";
+export type Input = Marko.Input<"nav"> & NavbarClassProps & {
+  start?: Marko.Input<"div"> & NavbarStartClassProps;
+  center?: Marko.Input<"div"> & NavbarCenterClassProps;
+  end?: Marko.Input<"div"> & NavbarEndClassProps;
+};
+
+<const/{ class: className, start, center, end, ...rest }=input/>
+
+<fieldset ...rest class=navbarClass({ className })>
+  <if=start>
+    <const/{ class: className, ...rest } = start/>
+    <div ...rest class=navbarStartClass({ className })>
+      <${start.renderBody}/>
+    </div>
+  </if>
+
+  <if=center>
+    <const/{ class: className, ...rest } = center/>
+    <div ...rest class=navbarCenterClass({ className })>
+      <${center.renderBody}/>
+    </div>
+  </if>
+
+  <if=end>
+    <const/{ class: className, ...rest } = end/>
+    <div ...rest class=navbarEndClass({ className })>
+      <${end.renderBody}/>
+    </div>
+  </if>
+</fieldset>

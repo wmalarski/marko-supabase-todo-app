@@ -32,11 +32,15 @@ export type Input = Marko.Input<"fieldset"> & FormControlClassProps & {
 
   <if=description>
     <const/{ class: className, ...rest } = description/>
-    <span ...rest class=textFieldDescriptionClass({ className })/>
+    <span ...rest class=textFieldDescriptionClass({ className })>
+      <${description.renderBody}/>
+    </span>
   </if>
 
   <if=error>
     <const/{ class: className, ...rest } = error/>
-    <span ...rest class=textFieldErrorMessageClass({ className })/>
+    <span ...rest class=textFieldErrorMessageClass({ className })>
+      <${error.renderBody}/>
+    </span>
   </if>
 </fieldset>
