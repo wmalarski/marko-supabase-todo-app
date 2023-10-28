@@ -1,21 +1,19 @@
-import { coerce, integer, minValue, number, object, parseAsync } from "valibot";
-import { getMediaByGenre } from "../../../../../services/tmdb";
+import { decode } from "decode-formdata";
+import { email, object, parseAsync, string } from "valibot";
 
-export const GET: MarkoRun.Handler = async (context) => {
-  const parseResult = await parseAsync(
-    object({
-      genreId: coerce(number([minValue(0), integer()]), Number),
-      page: coerce(number([integer(), minValue(1)]), Number),
-    }),
-    { ...context.params, ...Object.fromEntries(context.url.searchParams) },
+export const POST: MarkoRun.Handler = async (context) => {
+  const form = await parseAsync(
+    object({ email: string([email()]) }),
+    decode(await context.request.formData()),
   );
 
-  const movies = await getMediaByGenre({
-    context: context.tmdb,
-    genre: parseResult.genreId,
-    media: "movie",
-    page: parseResult.page,
+  console.log({ context, form });
+
+  const response = await context.supabase.auth.signInWithOtp({
+    email: form.email,
   });
 
-  return new Response(JSON.stringify(movies), { status: 200 });
+  console.log({ response });
+
+  return new Response(JSON.stringify(response), { status: 200 });
 };
