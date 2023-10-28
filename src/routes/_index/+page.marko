@@ -1,35 +1,21 @@
-<div>
-  <main>
-    <p class="bg-red-200">
-      Edit
-      <code>./src/routes/_index/+page.marko</code>
-       and save to reload.
-    </p>
-    <a href="https://markojs.com/docs/getting-started">
-      Learn Marko
-    </a>
-    <const/onClick=(() => console.log("CLICK"))/>
-    <app-button color="primary" onClick=onClick>
-      Hello
+<anon-navbar/>
+<main>
+  <const/onSubmit=(
+    (event: Event) => {
+      event.preventDefault();
+      console.log("HERE");
+    }
+  )/>
+
+  <form onSubmit=onSubmit>
+    <app-text-field>
+      <@label for="email">
+        Email
+      </@label>
+      <@field variant="bordered" id="email" name="email" type="email"/>
+    </app-text-field>
+    <app-button color="primary">
+      Submit
     </app-button>
-
-    <const/onSubmit=(
-      (event: Event) => {
-        event.preventDefault();
-        console.log("HERE");
-      }
-    )/>
-
-    <form onSubmit=onSubmit>
-      <app-text-field>
-        <@label for="email">
-          Email
-        </@label>
-        <@field variant="bordered" id="email" name="email" type="email"/>
-      </app-text-field>
-      <app-button color="primary">
-        Submit
-      </app-button>
-    </form>
-  </main>
-</div>
+  </form>
+</main>
