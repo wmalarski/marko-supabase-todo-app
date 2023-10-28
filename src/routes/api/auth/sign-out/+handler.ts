@@ -1,3 +1,5 @@
+import { redirectToPath } from "../../../../server/errors";
+
 export const GET: MarkoRun.Handler = async (context) => {
   console.log({ context });
 
@@ -5,5 +7,5 @@ export const GET: MarkoRun.Handler = async (context) => {
 
   console.log({ response });
 
-  return new Response(JSON.stringify(response), { status: 200 });
+  return redirectToPath("/", {});
 };
