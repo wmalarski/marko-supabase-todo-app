@@ -1,7 +1,11 @@
 import { decode } from "decode-formdata";
 import { email, literal, object, safeParseAsync, string } from "valibot";
 import { buildPath } from "../utils/paths";
-import { invalidRequestError, redirectToPath } from "./errors";
+import {
+  invalidRequestError,
+  redirectCurrentWithQuery,
+  redirectToPath,
+} from "./errors";
 
 const getCallbackUrl = (context: MarkoRun.Context) => {
   const callbackPath = buildPath({ path: "/api/auth/callback" });
@@ -29,15 +33,17 @@ export const magicLinkSignIn = async ({ context, formData }: SignInArgs) => {
   });
 
   if (response.error) {
-    return redirectToPath({
-      path: "/sign-in",
+    return redirectCurrentWithQuery({
+      context,
       query: { message: response.error.message },
+      variant: "error",
     });
   }
 
-  return redirectToPath({
-    path: "/sign-in",
-    query: { message: "Success", variant: "success" },
+  return redirectCurrentWithQuery({
+    context,
+    query: { message: "Success" },
+    variant: "success",
   });
 };
 
@@ -57,9 +63,10 @@ export const oauthSignIn = async ({ context, formData }: SignInArgs) => {
   });
 
   if (response.error) {
-    return redirectToPath({
-      path: "/sign-in",
+    return redirectCurrentWithQuery({
+      context,
       query: { message: response.error.message },
+      variant: "error",
     });
   }
 
@@ -85,8 +92,9 @@ export const passwordSignIn = async ({ context, formData }: SignInArgs) => {
   });
 
   if (response.error) {
-    return redirectToPath({
-      path: "/sign-in",
+    return redirectCurrentWithQuery({
+      context,
+      variant: "error",
       query: { message: response.error.message },
     });
   }
@@ -111,15 +119,17 @@ export const passwordSignUp = async (context: MarkoRun.Context) => {
   });
 
   if (response.error) {
-    return redirectToPath({
-      path: "/sign-up",
+    return redirectCurrentWithQuery({
+      context,
       query: { message: response.error.message },
+      variant: "error",
     });
   }
 
-  return redirectToPath({
-    path: "/sign-up",
-    query: { message: "Success", variant: "success" },
+  return redirectCurrentWithQuery({
+    context,
+    variant: "success",
+    query: { message: "Success" },
   });
 };
 
