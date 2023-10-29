@@ -1,0 +1,56 @@
+import {
+  type InputFormControlClassProps,
+  type InputDescriptionClassProps,
+  type InputErrorMessageClassProps,
+  type InputTextClassProps,
+  type InputCheckboxClassProps,
+  type InputLabelClassProps,
+  inputFormControlClass,
+  inputDescriptionClass,
+  inputErrorMessageClass,
+  inputTextClass,
+  inputCheckboxClass,
+  inputLabelClass,
+} from "./recipes";
+export type Input = Marko.Input<"fieldset"> & InputFormControlClassProps & {
+  description?: Marko.Input<"span"> & InputDescriptionClassProps;
+  error?: Marko.Input<"span"> & InputErrorMessageClassProps;
+  text?: Marko.Input<"input"> & InputTextClassProps;
+  checkbox?: Marko.Input<"input"> & InputCheckboxClassProps;
+  label?: Marko.Input<"label"> & InputLabelClassProps;
+};
+
+<const/{ class: className, label, text, checkbox, description, error, ...rest }=input/>
+
+<fieldset ...rest class=inputFormControlClass({ className })>
+  <if=label>
+    <const/{ class: className, ...rest } = label/>
+    <label ...rest class=inputLabelClass({ className })>
+      <${label.renderBody}/>
+    </label>
+  </if>
+
+  <if=text>
+    <const/{ class: className, color, size, variant, ...rest } = text/>
+    <input ...rest class=inputTextClass({ className, color, size, variant })>
+  </if>
+
+  <if=checkbox>
+    <const/{ class: className, color, size, ...rest } = checkbox/>
+    <input type="checkbox" ...rest class=inputCheckboxClass({ className, color, size })>
+  </if>
+
+  <if=description>
+    <const/{ class: className, ...rest } = description/>
+    <span ...rest class=inputDescriptionClass({ className })>
+      <${description.renderBody}/>
+    </span>
+  </if>
+
+  <if=error>
+    <const/{ class: className, ...rest } = error/>
+    <span ...rest class=inputErrorMessageClass({ className })>
+      <${error.renderBody}/>
+    </span>
+  </if>
+</fieldset>

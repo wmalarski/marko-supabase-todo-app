@@ -8,34 +8,32 @@ export interface Input {
   <input type="hidden" name="action" value="insert">
 
   <div class="flex gap-4">
-    <app-text-field>
+    <app-input>
       <@label for="finished" class="sr-only">
         Finished
       </@label>
-      <@field
-        placeholder="Text"
-        variant="bordered"
-        id="text"
-        name="text"
-        type="checkbox"
-      />
-    </app-text-field>
+      <@checkbox id="finished" name="finished" type="checkbox"/>
+    </app-input>
 
-    <app-text-field class="flex-grow">
-      <@label for="text">
+    <app-input class="flex-grow">
+      <@label for="text" class="sr-only">
         Text
       </@label>
-      <@field
+      <@text
         placeholder="Text"
         variant="bordered"
         id="text"
         name="text"
         type="text"
       />
-    </app-text-field>
+    </app-input>
 
-    <app-button color="primary">
+    <app-button color="secondary">
       Update
+    </app-button>
+
+    <app-button color="warning" type="reset">
+      Reset
     </app-button>
   </div>
 </form>

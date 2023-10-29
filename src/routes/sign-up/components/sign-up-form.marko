@@ -4,25 +4,25 @@
   </h2>
 
   <div class="flex flex-col gap-4">
-    <app-text-field>
+    <app-input>
       <@label for="email">
         Email
       </@label>
-      <@field
+      <@text
         placeholder="Email"
         variant="bordered"
         id="email"
         name="email"
         type="email"
       />
-    </app-text-field>
+    </app-input>
 
-    <app-text-field>
+    <app-input>
       <@label for="password">
         Password
       </@label>
-      <@field variant="bordered" id="password" name="password" type="password"/>
-    </app-text-field>
+      <@text variant="bordered" id="password" name="password" type="password"/>
+    </app-input>
 
     <app-button color="primary">
       Sign Up
