@@ -1,48 +1,31 @@
 import { selectTasks } from "../../../server/todos";
-import { buildPath } from "../../../utils/paths";
 
 <protected-navbar/>
-<main class="flex flex-col gap-8 max-w-xl justify-center w-full mx-auto">
-  $ const finished = (
-    $global.route.endsWith("finished")
-      ? true
-      : $global.route.endsWith("active")
-      ? false
-      : undefined
-  );
-  $ const page = Number($global.url.searchParams.get("page")) || 0;
-  $ const limit = 10;
-  $ const tasks = selectTasks({
-    context: $global,
-    limit,
-    skip: page * limit,
-    finished,
-  });
+$ const finished = (
+  $global.route.endsWith("finished")
+    ? true
+    : $global.route.endsWith("active")
+    ? false
+    : undefined
+);
+$ const page = Number($global.url.searchParams.get("page")) || 0;
+$ const limit = 10;
+$ const tasks = selectTasks({
+  context: $global,
+  limit,
+  skip: page * limit,
+  finished,
+});
 
-  <insert-task-form/>
-
-  <await(tasks)>
-    <@then|tasks|>
-      <if(tasks.data)>
-        <ul class="flex flex-col gap-2">
-          <for|task| of=tasks.data>
-            <li class="flex gap-2 items-center" key=String(task.id)>
-              <update-task-form
-                id=task.id
-                finished=task.finished
-                text=task.text
-              />
-              <delete-task-form id=task.id/>
-            </li>
-          </for>
-        </ul>
-        <app-pagination
-          variant="outline"
-          href=buildPath({ path: $global.route })
-          maxPage=Math.floor((tasks.count || 0) / limit)
-          page=page
-        />
-      </if>
-    </@then>
-  </await>
-</main>
+<await(tasks)>
+  <@then|tasks|>
+    <if(tasks.data)>
+      <tasks-list
+        count=tasks.count || 0
+        limit=limit
+        page=page
+        tasks=tasks.data
+      />
+    </if>
+  </@then>
+</await>

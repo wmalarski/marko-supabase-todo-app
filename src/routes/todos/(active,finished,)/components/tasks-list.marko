@@ -1,0 +1,28 @@
+import { Task } from "../../../../server/types";
+import { buildPath } from "../../../../utils/paths";
+export interface Input {
+  tasks: Task[];
+  page: number;
+  limit: number;
+  count: number;
+}
+
+<main class="flex flex-col gap-8 max-w-xl justify-center w-full mx-auto">
+  <insert-task-form/>
+
+  <ul class="flex flex-col gap-2">
+    <for|task| of=input.tasks>
+      <li class="flex gap-2 items-center" key=String(task.id)>
+        <update-task-form id=task.id finished=task.finished text=task.text/>
+        <delete-task-form id=task.id/>
+      </li>
+    </for>
+  </ul>
+
+  <app-pagination
+    variant="outline"
+    href=buildPath({ path: $global.route })
+    maxPage=Math.floor((input.count || 0) / input.limit)
+    page=input.page
+  />
+</main>

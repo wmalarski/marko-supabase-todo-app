@@ -55,3 +55,5 @@ export interface Database {
     };
   };
 }
+
+export type Task = Database["public"]["Tables"]["Task"]["Row"];
