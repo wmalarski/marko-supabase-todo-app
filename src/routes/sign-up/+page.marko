@@ -1,4 +1,11 @@
 <anon-navbar/>
 <main class="flex flex-col gap-8 max-w-md justify-center w-full mx-auto">
+  <const/message=$global.url.searchParams.get("message")/>
+  <if=message>
+    <app-alert variant="error">
+      ${message}
+    </app-alert>
+  </if>
+
   <sign-up-form/>
 </main>

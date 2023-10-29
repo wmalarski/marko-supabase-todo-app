@@ -1,6 +1,6 @@
 import { decode } from "decode-formdata";
 import { email, object, safeParseAsync, string } from "valibot";
-import { invalidRequestError } from "../../../server/errors";
+import { invalidRequestError } from "../../server/errors";
 
 export const POST: MarkoRun.Handler = async (context) => {
   const parsed = await safeParseAsync(

@@ -90,12 +90,6 @@ const passwordSignIn = async ({ context, decoded }: SignInArgs) => {
   return redirectToPath("/todos", {});
 };
 
-const handlers = {
-  password: passwordSignIn,
-  oauth: oauthSignIn,
-  "magic-link": magicLinkSignIn,
-};
-
 export const POST: MarkoRun.Handler = async (context) => {
   const decoded = decode(await context.request.formData());
 

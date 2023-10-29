@@ -1,0 +1,10 @@
+import { alertClass, type AlertClassProps } from "./recipes";
+export type Input = Marko.Input<"span"> & AlertClassProps;
+
+<const/{ variant, class: className, ...rest }=input/>
+
+<const/recipeResult=alertClass({ className, variant })/>
+
+<span role="alert" ...rest class=recipeResult>
+  <${input.renderBody}/>
+</span>

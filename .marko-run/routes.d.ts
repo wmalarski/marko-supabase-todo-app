@@ -14,11 +14,7 @@ declare module "@marko/run" {
 			"/api/auth/callback": Routes["/api/auth/callback"];
 			"/api/auth/sign-out": Routes["/api/auth/sign-out"];
 			"/sign-in": Routes["/sign-in"];
-			"/sign-in/api/magic-link": Routes["/sign-in/api/magic-link"];
-			"/sign-in/api/oauth": Routes["/sign-in/api/oauth"];
-			"/sign-in/api/password": Routes["/sign-in/api/password"];
 			"/sign-up": Routes["/sign-up"];
-			"/sign-up/api": Routes["/sign-up/api"];
 			"/todos": Routes["/todos"];
 			"/todos/active": Routes["/todos/active"];
 			"/todos/finished": Routes["/todos/finished"];
@@ -56,40 +52,10 @@ declare module "../src/routes/sign-in/+handler" {
   }
 }
 
-declare module "../src/routes/sign-in/api/magic-link/+handler" {
+declare module "../src/routes/sign-up/+handler" {
   namespace MarkoRun {
     export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
-    export type Route = Run.Routes["/sign-in/api/magic-link"];
-    export type Context = Run.MultiRouteContext<Route>;
-    export type Handler = Run.HandlerLike<Route>;
-    export const route: Run.HandlerTypeFn<Route>;
-  }
-}
-
-declare module "../src/routes/sign-in/api/oauth/+handler" {
-  namespace MarkoRun {
-    export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
-    export type Route = Run.Routes["/sign-in/api/oauth"];
-    export type Context = Run.MultiRouteContext<Route>;
-    export type Handler = Run.HandlerLike<Route>;
-    export const route: Run.HandlerTypeFn<Route>;
-  }
-}
-
-declare module "../src/routes/sign-in/api/password/+handler" {
-  namespace MarkoRun {
-    export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
-    export type Route = Run.Routes["/sign-in/api/password"];
-    export type Context = Run.MultiRouteContext<Route>;
-    export type Handler = Run.HandlerLike<Route>;
-    export const route: Run.HandlerTypeFn<Route>;
-  }
-}
-
-declare module "../src/routes/sign-up/api/+handler" {
-  namespace MarkoRun {
-    export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
-    export type Route = Run.Routes["/sign-up/api"];
+    export type Route = Run.Routes["/sign-up"];
     export type Context = Run.MultiRouteContext<Route>;
     export type Handler = Run.HandlerLike<Route>;
     export const route: Run.HandlerTypeFn<Route>;
@@ -99,7 +65,7 @@ declare module "../src/routes/sign-up/api/+handler" {
 declare module "../src/routes/+middleware" {
   namespace MarkoRun {
     export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
-    export type Route = Run.Routes["/" | "/api/auth/callback" | "/api/auth/sign-out" | "/sign-in" | "/sign-in/api/magic-link" | "/sign-in/api/oauth" | "/sign-in/api/password" | "/sign-up" | "/sign-up/api" | "/todos" | "/todos/active" | "/todos/finished"];
+    export type Route = Run.Routes["/" | "/api/auth/callback" | "/api/auth/sign-out" | "/sign-in" | "/sign-up" | "/todos" | "/todos/active" | "/todos/finished"];
     export type Context = Run.MultiRouteContext<Route>;
     export type Handler = Run.HandlerLike<Route>;
     export const route: Run.HandlerTypeFn<Route>;
@@ -174,11 +140,7 @@ type Routes = {
 	"/api/auth/callback": { verb: "get"; };
 	"/api/auth/sign-out": { verb: "get"; };
 	"/sign-in": { verb: "get" | "post"; meta: typeof import("../src/routes/sign-in/+meta.json"); };
-	"/sign-in/api/magic-link": { verb: "post"; };
-	"/sign-in/api/oauth": { verb: "post"; };
-	"/sign-in/api/password": { verb: "post"; };
-	"/sign-up": { verb: "get"; meta: typeof import("../src/routes/sign-up/+meta.json"); };
-	"/sign-up/api": { verb: "post"; };
+	"/sign-up": { verb: "get" | "post"; meta: typeof import("../src/routes/sign-up/+meta.json"); };
 	"/todos": { verb: "get"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
 	"/todos/active": { verb: "get"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
 	"/todos/finished": { verb: "get"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
