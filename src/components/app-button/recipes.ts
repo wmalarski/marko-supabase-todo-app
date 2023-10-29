@@ -1,7 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import { twCva } from "../../utils/twCva";
 
-export const buttonClass = twCva("btn no-animation flex items-center gap-1", {
+export const buttonClass = twCva("btn flex items-center gap-1", {
   defaultVariants: {
     color: null,
     isLoading: false,

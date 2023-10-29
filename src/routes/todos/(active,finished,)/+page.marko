@@ -1,4 +1,6 @@
 import { selectTasks } from "../../../server/todos";
+import { buildPath } from "../../../utils/paths";
+
 <protected-navbar/>
 <main class="flex flex-col gap-8 max-w-xl justify-center w-full mx-auto">
   $ const finished = (
@@ -9,10 +11,11 @@ import { selectTasks } from "../../../server/todos";
       : undefined
   );
   $ const page = Number($global.url.searchParams.get("page")) || 0;
+  $ const limit = 10;
   $ const tasks = selectTasks({
     context: $global,
-    limit: 10,
-    skip: page * 10,
+    limit,
+    skip: page * limit,
     finished,
   });
 
@@ -33,6 +36,12 @@ import { selectTasks } from "../../../server/todos";
             </li>
           </for>
         </ul>
+        <app-pagination
+          variant="outline"
+          href=buildPath({ path: $global.route })
+          maxPage=Math.floor((tasks.count || 0) / limit)
+          page=page
+        />
       </if>
     </@then>
   </await>

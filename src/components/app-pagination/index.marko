@@ -1,0 +1,37 @@
+import { type ButtonClassProps, buttonClass } from "../app-button/recipes";
+import { buildSearchParams } from "../../utils/searchParams";
+export type Input = ButtonClassProps & {
+  page: number;
+  maxPage: number;
+  href: string;
+};
+
+<const/{
+href,
+maxPage,
+page,
+color,
+isLoading,
+shape,
+size,
+variant,
+}=input/>
+
+<const/firstHref=(page < 1 ? undefined : `${href}?${buildSearchParams({page: page - 1})}`)/>
+<const/currentHref=`${href}?${buildSearchParams({page: page})}`/>
+<const/lastHref=(page + 1 > maxPage ? undefined : `${href}?${buildSearchParams({page: page + 1})}`)/>
+
+<const/recipeResult=buttonClass({
+  class: "join-item",
+  color,
+  isLoading,
+  shape,
+  size,
+  variant,
+})/>
+
+<div class="join">
+  <a href=firstHref class=recipeResult>«</a>
+  <a href=currentHref class=recipeResult>${page + 1}</a>
+  <a href=lastHref class=recipeResult>»</a>
+</div>
