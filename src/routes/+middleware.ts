@@ -5,7 +5,11 @@ const handler: MarkoRun.Handler = async (context, next) => {
 
   context.supabase = initSupabase({
     context,
-    onAppendCookie: cookies.push,
+    saveCookie: (cookie) => {
+      if (cookie) {
+        cookies.push(cookie);
+      }
+    },
   });
 
   const response = await next();

@@ -27,7 +27,10 @@ export const POST: MarkoRun.Handler = async (context) => {
 
     console.log({ url });
 
-    return Response.redirect(url);
+    return new Response(null, {
+      status: 400,
+      headers: { location: String(url) },
+    });
   }
 
   return redirectToPath("/todos", {});

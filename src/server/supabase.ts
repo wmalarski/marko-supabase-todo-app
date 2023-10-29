@@ -10,12 +10,12 @@ const options = {
 
 type InitSupabaseArgs = {
   context: MarkoRun.Context;
-  onAppendCookie: (cookie: string) => void;
+  saveCookie: (cookie: string) => void;
 };
 
 const getCookieStorage = ({
   context,
-  onAppendCookie,
+  saveCookie,
 }: InitSupabaseArgs): SupabaseAuthClientOptions["storage"] => {
   return {
     getItem(key: string) {
@@ -23,10 +23,10 @@ const getCookieStorage = ({
       return cookie ? parse(cookie)?.[key] : null;
     },
     removeItem(key: string) {
-      onAppendCookie(serialize(key, "", { ...options, maxAge: -1 }));
+      saveCookie(serialize(key, "", { ...options, maxAge: -1 }));
     },
     setItem(key: string, value: string) {
-      onAppendCookie(serialize(key, value, { ...options, maxAge: 610000 }));
+      saveCookie(serialize(key, value, { ...options, maxAge: 610000 }));
     },
   };
 };
