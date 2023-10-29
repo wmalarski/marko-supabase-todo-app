@@ -3,7 +3,7 @@ import {
   oauthSignIn,
   passwordSignIn,
 } from "../../server/auth";
-import { buildSearchParams } from "../../utils/searchParams";
+import { redirectCurrentWithQuery } from "../../server/errors";
 
 export const POST: MarkoRun.Handler = async (context) => {
   const formData = await context.request.formData();
@@ -17,10 +17,9 @@ export const POST: MarkoRun.Handler = async (context) => {
       return magicLinkSignIn({ context, formData });
   }
 
-  const params = buildSearchParams({ message: "Invalid request" });
-  const url = new URL(`${context.url.pathname}?${params}`, context.url);
-  return new Response(null, {
-    status: 302,
-    headers: { location: String(url) },
+  return redirectCurrentWithQuery({
+    context,
+    variant: "error",
+    query: { message: "Invalid request" },
   });
 };

@@ -1,10 +1,10 @@
+import { redirectCurrentWithQuery } from "../../../server/errors";
 import {
   deleteTask,
   insertTask,
   updateAllTasks,
   updateTask,
 } from "../../../server/todos";
-import { buildSearchParams } from "../../../utils/searchParams";
 
 export const POST: MarkoRun.Handler = async (context) => {
   const formData = await context.request.formData();
@@ -20,10 +20,9 @@ export const POST: MarkoRun.Handler = async (context) => {
       return insertTask({ context, formData });
   }
 
-  const params = buildSearchParams({ message: "Invalid request" });
-  const url = new URL(`${context.url.pathname}?${params}`, context.url);
-  return new Response(null, {
-    status: 302,
-    headers: { location: String(url) },
+  return redirectCurrentWithQuery({
+    context,
+    variant: "error",
+    query: { message: "Invalid request" },
   });
 };

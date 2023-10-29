@@ -1,6 +1,24 @@
+import { selectTasks } from "../../../server/todos";
 <protected-navbar/>
 <main class="flex flex-col gap-8 max-w-md justify-center w-full mx-auto">
-  <pre>
-${" "}${JSON.stringify({ session: $global.session, p: $global.route }, null, 2)}
-</pre>
+  $ const finished = (
+    $global.route.endsWith("finished")
+      ? true
+      : $global.route.endsWith("active")
+      ? false
+      : undefined
+  );
+  $ const page = Number($global.url.searchParams.get("page")) || 0;
+  $ const tasks = selectTasks({
+    context: $global,
+    limit: 10,
+    skip: page * 10,
+    finished,
+  });
+
+  <await(tasks)>
+    <@then|tasks|>
+      <pre>${JSON.stringify(tasks, null, 2)}</pre>
+    </@then>
+  </await>
 </main>

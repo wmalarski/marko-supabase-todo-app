@@ -62,6 +62,16 @@ declare module "../src/routes/sign-up/+handler" {
   }
 }
 
+declare module "../src/routes/todos/(active,finished,)/+handler" {
+  namespace MarkoRun {
+    export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
+    export type Route = Run.Routes["/todos" | "/todos/active" | "/todos/finished"];
+    export type Context = Run.MultiRouteContext<Route>;
+    export type Handler = Run.HandlerLike<Route>;
+    export const route: Run.HandlerTypeFn<Route>;
+  }
+}
+
 declare module "../src/routes/+middleware" {
   namespace MarkoRun {
     export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
@@ -171,7 +181,7 @@ type Routes = {
 	"/api/auth/sign-out": { verb: "get"; };
 	"/sign-in": { verb: "get" | "post"; meta: typeof import("../src/routes/sign-in/+meta.json"); };
 	"/sign-up": { verb: "get" | "post"; meta: typeof import("../src/routes/sign-up/+meta.json"); };
-	"/todos": { verb: "get"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
-	"/todos/active": { verb: "get"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
-	"/todos/finished": { verb: "get"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
+	"/todos": { verb: "get" | "post"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
+	"/todos/active": { verb: "get" | "post"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
+	"/todos/finished": { verb: "get" | "post"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
 }

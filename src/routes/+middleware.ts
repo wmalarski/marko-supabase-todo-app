@@ -2,7 +2,7 @@ import { initSupabase } from "../server/supabase";
 
 const handler: MarkoRun.Handler = async (context, next) => {
   const cookies: string[] = [];
-  console.log({ url: context.url });
+
   context.supabase = initSupabase({
     context,
     saveCookie: (cookie) => {

@@ -26,11 +26,12 @@ export const redirectCurrentWithQuery = ({
   query,
   variant,
 }: RedirectCurrentWithQueryArgs) => {
-  const location = `${context.url.pathname}?${buildSearchParams({
-    ...query,
-    variant,
-  })}`;
-  return new Response(null, { status: 302, headers: { location } });
+  const params = buildSearchParams({ ...query, variant });
+  const url = new URL(`${context.url.pathname}?${params}`, context.url);
+  return new Response(null, {
+    status: 302,
+    headers: { location: String(url) },
+  });
 };
 
 export const invalidRequestError = (issues: Issues) => {
