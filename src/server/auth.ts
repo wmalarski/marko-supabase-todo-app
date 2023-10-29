@@ -35,8 +35,6 @@ export const magicLinkSignIn = async ({ context, decoded }: SignInArgs) => {
     });
   }
 
-  console.log({ response });
-
   return redirectToPath({
     path: "/sign-in",
     query: { message: "Success", variant: "success" },
