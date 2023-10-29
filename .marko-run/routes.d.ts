@@ -19,6 +19,9 @@ declare module "@marko/run" {
 			"/sign-in/api/password": Routes["/sign-in/api/password"];
 			"/sign-up": Routes["/sign-up"];
 			"/sign-up/api": Routes["/sign-up/api"];
+			"/todos": Routes["/todos"];
+			"/todos/active": Routes["/todos/active"];
+			"/todos/finished": Routes["/todos/finished"];
 		}
 	}> {}
 }
@@ -86,7 +89,17 @@ declare module "../src/routes/sign-up/api/+handler" {
 declare module "../src/routes/+middleware" {
   namespace MarkoRun {
     export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
-    export type Route = Run.Routes["/" | "/api/auth/callback" | "/api/auth/sign-out" | "/sign-in" | "/sign-in/api/magic-link" | "/sign-in/api/oauth" | "/sign-in/api/password" | "/sign-up" | "/sign-up/api"];
+    export type Route = Run.Routes["/" | "/api/auth/callback" | "/api/auth/sign-out" | "/sign-in" | "/sign-in/api/magic-link" | "/sign-in/api/oauth" | "/sign-in/api/password" | "/sign-up" | "/sign-up/api" | "/todos" | "/todos/active" | "/todos/finished"];
+    export type Context = Run.MultiRouteContext<Route>;
+    export type Handler = Run.HandlerLike<Route>;
+    export const route: Run.HandlerTypeFn<Route>;
+  }
+}
+
+declare module "../src/routes/todos/(active,finished,)/+middleware" {
+  namespace MarkoRun {
+    export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
+    export type Route = Run.Routes["/todos" | "/todos/active" | "/todos/finished"];
     export type Context = Run.MultiRouteContext<Route>;
     export type Handler = Run.HandlerLike<Route>;
     export const route: Run.HandlerTypeFn<Route>;
@@ -123,13 +136,23 @@ declare module "../src/routes/sign-up/+page.marko" {
   }
 }
 
+declare module "../src/routes/todos/(active,finished,)/+page.marko" {
+  namespace MarkoRun {
+    export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
+    export type Route = Run.Routes["/todos" | "/todos/active" | "/todos/finished"];
+    export type Context = Run.MultiRouteContext<Route> & Marko.Global;
+    export type Handler = Run.HandlerLike<Route>;
+    export const route: Run.HandlerTypeFn<Route>;
+  }
+}
+
 declare module "../src/routes/+layout.marko" {
   export interface Input {
     renderBody: Marko.Body;
   }
   namespace MarkoRun {
     export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
-    export type Route = Run.Routes["/" | "/sign-in" | "/sign-up"];
+    export type Route = Run.Routes["/" | "/sign-in" | "/sign-up" | "/todos" | "/todos/active" | "/todos/finished"];
     export type Context = Run.MultiRouteContext<Route> & Marko.Global;
     export type Handler = Run.HandlerLike<Route>;
     export const route: Run.HandlerTypeFn<Route>;
@@ -146,4 +169,7 @@ type Routes = {
 	"/sign-in/api/password": { verb: "post"; };
 	"/sign-up": { verb: "get"; meta: typeof import("../src/routes/sign-up/+meta.json"); };
 	"/sign-up/api": { verb: "post"; };
+	"/todos": { verb: "get"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
+	"/todos/active": { verb: "get"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
+	"/todos/finished": { verb: "get"; meta: typeof import("../src/routes/todos/(active,finished,)/+meta.json"); };
 }

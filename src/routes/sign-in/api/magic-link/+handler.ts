@@ -1,6 +1,7 @@
 import { decode } from "decode-formdata";
 import { email, object, safeParseAsync, string } from "valibot";
 import { invalidRequestError } from "../../../../server/errors";
+import { buildPath } from "../../../../utils/paths";
 
 export const POST: MarkoRun.Handler = async (context) => {
   const parsed = await safeParseAsync(
@@ -12,10 +13,12 @@ export const POST: MarkoRun.Handler = async (context) => {
     return invalidRequestError(parsed.issues);
   }
 
-  console.log({ context, form: parsed });
+  const callbackPath = buildPath("/api/auth/callback", {});
+  const emailRedirectTo = `${context.url.origin}${callbackPath}`;
 
   const response = await context.supabase.auth.signInWithOtp({
     email: parsed.output.email,
+    options: { emailRedirectTo },
   });
 
   console.log({ response });

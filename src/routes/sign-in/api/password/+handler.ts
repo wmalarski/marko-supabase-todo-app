@@ -1,6 +1,7 @@
 import { decode } from "decode-formdata";
 import { email, object, safeParseAsync, string } from "valibot";
-import { invalidRequestError } from "../../../../server/errors";
+import { invalidRequestError, redirectToPath } from "../../../../server/errors";
+import { buildSearchParams } from "../../../../utils/searchParams";
 
 export const POST: MarkoRun.Handler = async (context) => {
   const parsed = await safeParseAsync(
@@ -12,8 +13,6 @@ export const POST: MarkoRun.Handler = async (context) => {
     return invalidRequestError(parsed.issues);
   }
 
-  console.log({ context, form: parsed });
-
   const response = await context.supabase.auth.signInWithPassword({
     email: parsed.output.email,
     password: parsed.output.password,
@@ -21,5 +20,15 @@ export const POST: MarkoRun.Handler = async (context) => {
 
   console.log({ response });
 
-  return new Response(JSON.stringify(response), { status: 200 });
+  if (response.error) {
+    const params = buildSearchParams({ message: response.error.message });
+
+    const url = new URL(`${context.url.pathname}?${params}`, context.url);
+
+    console.log({ url });
+
+    return Response.redirect(url);
+  }
+
+  return redirectToPath("/todos", {});
 };

@@ -8,29 +8,33 @@ const options = {
   sameSite: "strict",
 } as const;
 
-const getCookieStorage = (
-  context: MarkoRun.Context,
-): SupabaseAuthClientOptions["storage"] => {
+type InitSupabaseArgs = {
+  context: MarkoRun.Context;
+  onAppendCookie: (cookie: string) => void;
+};
+
+const getCookieStorage = ({
+  context,
+  onAppendCookie,
+}: InitSupabaseArgs): SupabaseAuthClientOptions["storage"] => {
   return {
     getItem(key: string) {
       const cookie = context.request.headers.get("cookie");
       return cookie ? parse(cookie)?.[key] : null;
     },
     removeItem(key: string) {
-      const cookie = serialize(key, "", { ...options, maxAge: -1 });
-      context.request.headers.append("set-cookie", cookie);
+      onAppendCookie(serialize(key, "", { ...options, maxAge: -1 }));
     },
     setItem(key: string, value: string) {
-      const cookie = serialize(key, value, { ...options, maxAge: 610000 });
-      context.request.headers.append("set-cookie", cookie);
+      onAppendCookie(serialize(key, value, { ...options, maxAge: 610000 }));
     },
   };
 };
 
-export const initSupabase = (context: MarkoRun.Context) => {
+export const initSupabase = (args: InitSupabaseArgs) => {
   return createClient(
     import.meta.env.VITE_PUBLIC_SUPABASE_URL,
     import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY,
-    { auth: { flowType: "pkce", storage: getCookieStorage(context) } },
+    { auth: { flowType: "pkce", storage: getCookieStorage(args) } },
   );
 };
