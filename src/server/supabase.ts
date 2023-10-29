@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import type { SupabaseAuthClientOptions } from "@supabase/supabase-js/dist/module/lib/types";
 import { parse, serialize } from "cookie";
+import { Database } from "./types";
 
 const options = {
   httpOnly: true,
@@ -40,7 +41,7 @@ const getCookieStorage = ({
 };
 
 export const initSupabase = (args: InitSupabaseArgs) => {
-  return createClient(
+  return createClient<Database>(
     import.meta.env.VITE_PUBLIC_SUPABASE_URL,
     import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY,
     { auth: { flowType: "pkce", storage: getCookieStorage(args) } },
