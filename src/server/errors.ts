@@ -1,4 +1,3 @@
-import type { Issues } from "valibot";
 import { buildPath, BuildPathArgs, type RoutePath } from "../utils/paths";
 import { buildSearchParams } from "../utils/searchParams";
 
@@ -32,8 +31,4 @@ export const redirectCurrentWithQuery = ({
     status: 302,
     headers: { location: String(url) },
   });
-};
-
-export const invalidRequestError = (issues: Issues) => {
-  return new Response(JSON.stringify(issues), { status: 400 });
 };

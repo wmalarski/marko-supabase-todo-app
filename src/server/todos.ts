@@ -1,11 +1,7 @@
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { decode } from "decode-formdata";
 import { boolean, object, safeParseAsync, string } from "valibot";
-import {
-  invalidRequestError,
-  redirectCurrentWithQuery,
-  unauthorizedError,
-} from "./errors";
+import { redirectCurrentWithQuery, unauthorizedError } from "./errors";
 
 type SelectTasksArgs = {
   context: MarkoRun.Context;
@@ -63,7 +59,11 @@ export const deleteTask = async ({ context, formData }: TaskMutationArgs) => {
   );
 
   if (!parsed.success) {
-    return invalidRequestError(parsed.issues);
+    return redirectCurrentWithQuery({
+      context,
+      variant: "error",
+      query: { message: parsed.issues[0].message },
+    });
   }
 
   const result = await context.supabase
@@ -81,7 +81,11 @@ export const updateTask = async ({ context, formData }: TaskMutationArgs) => {
   );
 
   if (!parsed.success) {
-    return invalidRequestError(parsed.issues);
+    return redirectCurrentWithQuery({
+      context,
+      variant: "error",
+      query: { message: parsed.issues[0].message },
+    });
   }
 
   const result = await context.supabase
@@ -105,7 +109,11 @@ export const insertTask = async ({ context, formData }: TaskMutationArgs) => {
   );
 
   if (!parsed.success) {
-    return invalidRequestError(parsed.issues);
+    return redirectCurrentWithQuery({
+      context,
+      variant: "error",
+      query: { message: parsed.issues[0].message },
+    });
   }
 
   const result = await context.supabase.from("Task").insert({

@@ -4,15 +4,7 @@ export interface Input {
   finished: boolean | null;
 }
 
-<let/isDirty=false/>
-
-<const/onChange=(
-  () => {
-    isDirty = true;
-  }
-)/>
-
-<form class="flex gap-2 items-center flex-grow" method="POST" onChange=onChange>
+<form class="flex gap-2 items-center flex-grow" method="POST">
   <input type="hidden" name="action" value="update">
   <input type="hidden" name="id" value=input.id>
 
@@ -20,11 +12,7 @@ export interface Input {
     <@label for="finished" class="sr-only">
       Finished
     </@label>
-    <@checkbox
-      id="finished"
-      name="finished"
-      value=(input.finished ? "on" : "off")
-    />
+    <@checkbox id="finished" name="finished" checked=input.finished/>
   </app-input>
 
   <app-input class="flex-grow">
@@ -38,14 +26,15 @@ export interface Input {
       name="text"
       type="text"
       value=input.text
+      size="sm"
     />
   </app-input>
 
-  <app-button color="secondary" disabled=!isDirty>
+  <app-button color="secondary" size="sm">
     Update
   </app-button>
 
-  <app-button color="warning" type="reset" disabled=!isDirty>
+  <app-button color="warning" type="reset" size="sm">
     Reset
   </app-button>
 </form>

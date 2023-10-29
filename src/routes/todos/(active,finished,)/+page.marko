@@ -21,9 +21,9 @@ import { selectTasks } from "../../../server/todos";
   <await(tasks)>
     <@then|tasks|>
       <if(tasks.data)>
-        <ul>
+        <ul class="flex flex-col gap-2">
           <for|task| of=tasks.data>
-            <li class="flex gap-2" key=String(task.id)>
+            <li class="flex gap-2 items-center" key=String(task.id)>
               <update-task-form
                 id=task.id
                 finished=task.finished

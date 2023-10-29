@@ -1,11 +1,7 @@
 import { decode } from "decode-formdata";
 import { email, literal, object, safeParseAsync, string } from "valibot";
 import { buildPath } from "../utils/paths";
-import {
-  invalidRequestError,
-  redirectCurrentWithQuery,
-  redirectToPath,
-} from "./errors";
+import { redirectCurrentWithQuery, redirectToPath } from "./errors";
 
 const getCallbackUrl = (context: MarkoRun.Context) => {
   const callbackPath = buildPath({ path: "/api/auth/callback" });
@@ -24,7 +20,11 @@ export const magicLinkSignIn = async ({ context, formData }: SignInArgs) => {
   );
 
   if (!parsed.success) {
-    return invalidRequestError(parsed.issues);
+    return redirectCurrentWithQuery({
+      context,
+      variant: "error",
+      query: { message: parsed.issues[0].message },
+    });
   }
 
   const response = await context.supabase.auth.signInWithOtp({
@@ -54,7 +54,11 @@ export const oauthSignIn = async ({ context, formData }: SignInArgs) => {
   );
 
   if (!parsed.success) {
-    return invalidRequestError(parsed.issues);
+    return redirectCurrentWithQuery({
+      context,
+      variant: "error",
+      query: { message: parsed.issues[0].message },
+    });
   }
 
   const response = await context.supabase.auth.signInWithOAuth({
@@ -83,7 +87,11 @@ export const passwordSignIn = async ({ context, formData }: SignInArgs) => {
   );
 
   if (!parsed.success) {
-    return invalidRequestError(parsed.issues);
+    return redirectCurrentWithQuery({
+      context,
+      variant: "error",
+      query: { message: parsed.issues[0].message },
+    });
   }
 
   const response = await context.supabase.auth.signInWithPassword({
@@ -109,7 +117,11 @@ export const passwordSignUp = async (context: MarkoRun.Context) => {
   );
 
   if (!parsed.success) {
-    return invalidRequestError(parsed.issues);
+    return redirectCurrentWithQuery({
+      context,
+      variant: "error",
+      query: { message: parsed.issues[0].message },
+    });
   }
 
   const response = await context.supabase.auth.signUp({
@@ -146,7 +158,11 @@ export const callback = async (context: MarkoRun.Context) => {
   );
 
   if (!parsed.success) {
-    return invalidRequestError(parsed.issues);
+    return redirectCurrentWithQuery({
+      context,
+      variant: "error",
+      query: { message: parsed.issues[0].message },
+    });
   }
 
   const response = await context.supabase.auth.exchangeCodeForSession(
