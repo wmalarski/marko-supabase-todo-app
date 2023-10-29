@@ -1,11 +1,3 @@
-import { redirectToPath } from "../../../../server/errors";
+import { signOut } from "../../../../server/auth";
 
-export const GET: MarkoRun.Handler = async (context) => {
-  console.log({ context });
-
-  const response = await context.supabase.auth.signOut();
-
-  console.log({ response });
-
-  return redirectToPath({ path: "/" });
-};
+export const GET: MarkoRun.Handler = signOut;
