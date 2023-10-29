@@ -67,6 +67,7 @@ export const oauthSignIn = async ({ context, decoded }: SignInArgs) => {
 
   return new Response(null, {
     headers: { location: response.data.url },
+    status: 302,
   });
 };
 
