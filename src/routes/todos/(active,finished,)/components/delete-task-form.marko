@@ -1,0 +1,9 @@
+export interface Input {
+  id: string;
+}
+
+<form method="POST">
+  <input type="hidden" name="action" value="delete">
+  <input type="hidden" name="id" value=input.id>
+  <app-button>Delete</app-button>
+</form>

@@ -1,0 +1,26 @@
+<form class="flex flex-col gap-6" method="POST">
+  <input type="hidden" name="action" value="insert">
+
+  <h2 class="text-xl">
+    Add new task
+  </h2>
+
+  <div class="flex gap-4">
+    <app-text-field class="flex-grow">
+      <@label for="text">
+        Text
+      </@label>
+      <@field
+        placeholder="Text"
+        variant="bordered"
+        id="text"
+        name="text"
+        type="text"
+      />
+    </app-text-field>
+
+    <app-button color="primary">
+      Add
+    </app-button>
+  </div>
+</form>

@@ -92,26 +92,6 @@ export const updateTask = async ({ context, formData }: TaskMutationArgs) => {
   return buildResponse({ context, result });
 };
 
-export const updateAllTasks = async ({
-  context,
-  formData,
-}: TaskMutationArgs) => {
-  const parsed = await safeParseAsync(
-    object({ finished: boolean() }),
-    decode(formData, { booleans: ["finished"] }),
-  );
-
-  if (!parsed.success) {
-    return invalidRequestError(parsed.issues);
-  }
-
-  const result = await context.supabase
-    .from("Task")
-    .update({ finished: parsed.output.finished });
-
-  return buildResponse({ context, result });
-};
-
 export const insertTask = async ({ context, formData }: TaskMutationArgs) => {
   const userId = context.session?.user.id;
 
@@ -120,8 +100,8 @@ export const insertTask = async ({ context, formData }: TaskMutationArgs) => {
   }
 
   const parsed = await safeParseAsync(
-    object({ text: string(), finished: boolean() }),
-    decode(formData, { booleans: ["finished"] }),
+    object({ text: string() }),
+    decode(formData),
   );
 
   if (!parsed.success) {
@@ -129,7 +109,6 @@ export const insertTask = async ({ context, formData }: TaskMutationArgs) => {
   }
 
   const result = await context.supabase.from("Task").insert({
-    finished: parsed.output.finished,
     text: parsed.output.text,
     user_id: userId,
   });

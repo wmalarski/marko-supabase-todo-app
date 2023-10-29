@@ -1,0 +1,41 @@
+export interface Input {
+  id: string;
+  text: string;
+  finished: boolean;
+}
+
+<form class="flex flex-col gap-6" method="POST">
+  <input type="hidden" name="action" value="insert">
+
+  <div class="flex gap-4">
+    <app-text-field>
+      <@label for="finished" class="sr-only">
+        Finished
+      </@label>
+      <@field
+        placeholder="Text"
+        variant="bordered"
+        id="text"
+        name="text"
+        type="checkbox"
+      />
+    </app-text-field>
+
+    <app-text-field class="flex-grow">
+      <@label for="text">
+        Text
+      </@label>
+      <@field
+        placeholder="Text"
+        variant="bordered"
+        id="text"
+        name="text"
+        type="text"
+      />
+    </app-text-field>
+
+    <app-button color="primary">
+      Update
+    </app-button>
+  </div>
+</form>
