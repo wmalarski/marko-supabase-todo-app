@@ -1,4 +1,4 @@
-import { Task } from "../../../../server/types";
+import type { Task } from "../../../../server/types";
 import { buildPath } from "../../../../utils/paths";
 export interface Input {
   tasks: Task[];
@@ -7,12 +7,20 @@ export interface Input {
   count: number;
 }
 
+<let/tasks=input.tasks/>
+
+<const/onInsert=(
+  (task: Task) => {
+    tasks = [...tasks, task];
+  }
+)/>
+
 <main class="flex flex-col gap-8 max-w-xl justify-center w-full mx-auto">
-  <insert-task-form/>
+  <insert-task-form onInsert=onInsert/>
 
   <ul class="flex flex-col gap-2">
-    <for|task| of=input.tasks>
-      <li class="flex gap-2 items-center" key=String(task.id)>
+    <for|task| of=tasks>
+      <li class="flex gap-2 items-center">
         <update-task-form id=task.id finished=task.finished text=task.text/>
         <delete-task-form id=task.id/>
       </li>

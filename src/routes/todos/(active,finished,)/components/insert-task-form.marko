@@ -1,4 +1,28 @@
-<form class="flex flex-col gap-6" method="POST">
+import type { Task } from "../../../../server/types";
+export interface Input {
+  onInsert: (task: Task) => void;
+}
+
+<const/onSubmit=(
+  async (event: SubmitEvent) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target as HTMLFormElement);
+    const text = formData.get("text") as string;
+
+    input.onInsert({
+      created_at: new Date().toDateString(),
+      finished: false,
+      id: Math.floor(Math.random() * 1e10),
+      text,
+      user_id: "",
+    });
+
+    await fetch("/todos", { body: formData, method: "POST" });
+  }
+)/>
+
+<form class="flex flex-col gap-6" method="POST" onSubmit=onSubmit>
   <input type="hidden" name="action" value="insert">
 
   <h2 class="text-xl">
