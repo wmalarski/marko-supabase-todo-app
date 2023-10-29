@@ -19,7 +19,7 @@ const magicLinkSignIn = async ({ context, decoded }: SignInArgs) => {
     return invalidRequestError(parsed.issues);
   }
 
-  const callbackPath = buildPath("/api/auth/callback", {});
+  const callbackPath = buildPath({ path: "/api/auth/callback" });
   const emailRedirectTo = `${context.url.origin}${callbackPath}`;
 
   const response = await context.supabase.auth.signInWithOtp({
@@ -27,9 +27,19 @@ const magicLinkSignIn = async ({ context, decoded }: SignInArgs) => {
     options: { emailRedirectTo },
   });
 
+  if (response.error) {
+    return redirectToPath({
+      path: "/sign-in",
+      query: { message: response.error.message },
+    });
+  }
+
   console.log({ response });
 
-  return new Response(JSON.stringify(response), { status: 200 });
+  return redirectToPath({
+    path: "/sign-in",
+    query: { message: "Success", variant: "success" },
+  });
 };
 
 export const oauthSignIn = async ({ context, decoded }: SignInArgs) => {
@@ -42,7 +52,7 @@ export const oauthSignIn = async ({ context, decoded }: SignInArgs) => {
     return invalidRequestError(parsed.issues);
   }
 
-  const callbackPath = buildPath("/api/auth/callback", {});
+  const callbackPath = buildPath({ path: "/api/auth/callback" });
   const redirectTo = `${context.url.origin}${callbackPath}`;
 
   console.log({ context, form: parsed, callbackPath });
@@ -52,9 +62,16 @@ export const oauthSignIn = async ({ context, decoded }: SignInArgs) => {
     options: { redirectTo },
   });
 
-  console.log({ response });
+  if (response.error) {
+    return redirectToPath({
+      path: "/sign-in",
+      query: { message: response.error.message },
+    });
+  }
 
-  return new Response(JSON.stringify(response), { status: 200 });
+  return new Response(null, {
+    headers: { location: response.data.url },
+  });
 };
 
 const passwordSignIn = async ({ context, decoded }: SignInArgs) => {
@@ -75,19 +92,13 @@ const passwordSignIn = async ({ context, decoded }: SignInArgs) => {
   console.log({ response });
 
   if (response.error) {
-    const params = buildSearchParams({ message: response.error.message });
-
-    const url = new URL(`${context.url.pathname}?${params}`, context.url);
-
-    console.log({ url });
-
-    return new Response(null, {
-      status: 302,
-      headers: { location: String(url) },
+    return redirectToPath({
+      path: "/sign-in",
+      query: { message: response.error.message },
     });
   }
 
-  return redirectToPath("/todos", {});
+  return redirectToPath({ path: "/todos" });
 };
 
 export const POST: MarkoRun.Handler = async (context) => {

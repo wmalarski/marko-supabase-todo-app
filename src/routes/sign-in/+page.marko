@@ -1,8 +1,14 @@
 <anon-navbar/>
 <main class="flex flex-col gap-8 max-w-md justify-center w-full mx-auto">
-  <const/message=$global.url.searchParams.get("message")/>
+  <const/search=($global.url.searchParams)/>
+  <const/message=search.get("message")/>
+  <const/variant=(
+    search.get("variant") === "success"
+      ? ("success" as const)
+      : ("error" as const)
+  )/>
   <if=message>
-    <app-alert variant="error">
+    <app-alert variant=variant>
       ${message}
     </app-alert>
   </if>

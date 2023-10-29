@@ -18,5 +18,5 @@ export const GET: MarkoRun.Handler = async (context) => {
 
   console.log({ response });
 
-  return redirectToPath("/", {});
+  return redirectToPath({ path: "/" });
 };

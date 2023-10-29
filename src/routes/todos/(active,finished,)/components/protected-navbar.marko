@@ -1,12 +1,12 @@
 import { buildPath } from "../../../../utils/paths";
 <app-navbar>
   <@start>
-    <a href=buildPath("/", {})>
+    <a href=buildPath({ path: "/" })>
       Home
     </a>
   </@start>
   <@end>
-    <a href=buildPath("/api/auth/sign-out", {})>
+    <a href=buildPath({ path: "/api/auth/sign-out" })>
       Sign Out
     </a>
   </@end>

@@ -1,6 +1,6 @@
 import { decode } from "decode-formdata";
 import { email, object, safeParseAsync, string } from "valibot";
-import { invalidRequestError } from "../../server/errors";
+import { invalidRequestError, redirectToPath } from "../../server/errors";
 
 export const POST: MarkoRun.Handler = async (context) => {
   const parsed = await safeParseAsync(
@@ -19,7 +19,15 @@ export const POST: MarkoRun.Handler = async (context) => {
     password: parsed.output.password,
   });
 
-  console.log({ response });
+  if (response.error) {
+    return redirectToPath({
+      path: "/sign-up",
+      query: { message: response.error.message },
+    });
+  }
 
-  return new Response(JSON.stringify(response), { status: 200 });
+  return redirectToPath({
+    path: "/sign-up",
+    query: { message: "Success", variant: "success" },
+  });
 };

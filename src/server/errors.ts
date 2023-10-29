@@ -1,5 +1,5 @@
 import type { Issues } from "valibot";
-import { buildPath, type RouteParams, type RoutePath } from "../utils/paths";
+import { buildPath, BuildPathArgs, type RoutePath } from "../utils/paths";
 
 export const unauthorizedError = () => {
   return new Response(JSON.stringify({ error: "Unauthorized" }), {
@@ -8,14 +8,10 @@ export const unauthorizedError = () => {
 };
 
 export const redirectToPath = <Path extends RoutePath>(
-  path: Path,
-  params: RouteParams<Path>,
+  args: BuildPathArgs<Path>,
 ) => {
-  const url = buildPath(path, params);
-  return new Response(null, {
-    status: 302,
-    headers: { location: String(url) },
-  });
+  const location = buildPath(args);
+  return new Response(null, { status: 302, headers: { location } });
 };
 
 export const invalidRequestError = (issues: Issues) => {
