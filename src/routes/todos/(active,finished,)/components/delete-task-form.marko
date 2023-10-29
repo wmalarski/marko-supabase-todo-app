@@ -1,8 +1,21 @@
 export interface Input {
   id: number;
+  onDelete: () => void;
 }
 
-<form method="POST">
+<const/onSubmit=(
+  async (event: SubmitEvent) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target as HTMLFormElement);
+
+    input.onDelete();
+
+    await fetch("/todos", { body: formData, method: "POST" });
+  }
+)/>
+
+<form method="POST" onSubmit=onSubmit>
   <input type="hidden" name="action" value="delete">
   <input type="hidden" name="id" value=input.id>
 

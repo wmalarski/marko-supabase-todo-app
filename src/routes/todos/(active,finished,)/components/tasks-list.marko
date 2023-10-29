@@ -1,4 +1,4 @@
-import type { Task } from "../../../../server/types";
+import type { Task, TaskUpdate } from "../../../../server/types";
 import { buildPath } from "../../../../utils/paths";
 export interface Input {
   tasks: Task[];
@@ -21,8 +21,25 @@ export interface Input {
   <ul class="flex flex-col gap-2">
     <for|task| of=tasks>
       <li class="flex gap-2 items-center">
-        <update-task-form id=task.id finished=task.finished text=task.text/>
-        <delete-task-form id=task.id/>
+        <const/onUpdate=(
+          (update: TaskUpdate) => {
+            tasks = tasks.map((entry) =>
+              entry.id !== task.id ? entry : { ...entry, ...update }
+            );
+          }
+        )/>
+        <update-task-form
+          id=task.id
+          finished=task.finished
+          text=task.text
+          onUpdate=onUpdate
+        />
+        <const/onDelete=(
+          () => {
+            tasks = tasks.filter((entry) => entry.id !== task.id);
+          }
+        )/>
+        <delete-task-form id=task.id onDelete=onDelete/>
       </li>
     </for>
   </ul>

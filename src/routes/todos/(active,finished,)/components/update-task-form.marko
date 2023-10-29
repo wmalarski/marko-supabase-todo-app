@@ -1,10 +1,27 @@
+import type { TaskUpdate } from "../../../../server/types";
 export interface Input {
   id: number;
   text: string | null;
   finished: boolean | null;
+  onUpdate: (task: TaskUpdate) => void;
 }
 
-<form class="flex gap-2 items-center flex-grow" method="POST">
+<const/onSubmit=(
+  async (event: SubmitEvent) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target as HTMLFormElement);
+
+    input.onUpdate({
+      finished: formData.get("finished") === "true",
+      text: formData.get("text") as string,
+    });
+
+    await fetch("/todos", { body: formData, method: "POST" });
+  }
+)/>
+
+<form class="flex gap-2 items-center flex-grow" method="POST" onSubmit=onSubmit>
   <input type="hidden" name="action" value="update">
   <input type="hidden" name="id" value=input.id>
 
