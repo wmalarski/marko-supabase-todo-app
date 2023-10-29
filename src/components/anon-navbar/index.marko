@@ -1,16 +1,16 @@
 import { buildPath } from "../../utils/paths";
 <app-navbar>
   <@start>
-    <a href=buildPath({ path: "/" })>
+    <app-anchor variant="ghost" size="lg" href=buildPath({ path: "/" })>
       Home
-    </a>
+    </app-anchor>
   </@start>
   <@end>
-    <a href=buildPath({ path: "/sign-in" })>
+    <app-anchor variant="ghost" href=buildPath({ path: "/sign-in" })>
       Sign In
-    </a>
-    <a href=buildPath({ path: "/sign-up" })>
+    </app-anchor>
+    <app-anchor variant="ghost" href=buildPath({ path: "/sign-up" })>
       Sign Up
-    </a>
+    </app-anchor>
   </@end>
 </app-navbar>

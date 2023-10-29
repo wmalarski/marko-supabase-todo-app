@@ -1,13 +1,26 @@
 import { buildPath } from "../../../../utils/paths";
 <app-navbar>
   <@start>
-    <a href=buildPath({ path: "/" })>
+    <app-anchor variant="ghost" size="lg" href=buildPath({ path: "/" })>
       Home
-    </a>
+    </app-anchor>
   </@start>
+
+  <@center>
+    <app-anchor variant="ghost" href=buildPath({ path: "/todos" })>
+      All
+    </app-anchor>
+    <app-anchor variant="ghost" href=buildPath({ path: "/todos/active" })>
+      Active
+    </app-anchor>
+    <app-anchor variant="ghost" href=buildPath({ path: "/todos/finished" })>
+      Finished
+    </app-anchor>
+  </@center>
+
   <@end>
-    <a href=buildPath({ path: "/api/auth/sign-out" })>
+    <app-anchor variant="ghost" href=buildPath({ path: "/api/auth/sign-out" })>
       Sign Out
-    </a>
+    </app-anchor>
   </@end>
 </app-navbar>
