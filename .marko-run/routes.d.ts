@@ -46,6 +46,16 @@ declare module "../src/routes/api/auth/sign-out/+handler" {
   }
 }
 
+declare module "../src/routes/sign-in/+handler" {
+  namespace MarkoRun {
+    export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
+    export type Route = Run.Routes["/sign-in"];
+    export type Context = Run.MultiRouteContext<Route>;
+    export type Handler = Run.HandlerLike<Route>;
+    export const route: Run.HandlerTypeFn<Route>;
+  }
+}
+
 declare module "../src/routes/sign-in/api/magic-link/+handler" {
   namespace MarkoRun {
     export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
@@ -163,7 +173,7 @@ type Routes = {
 	"/_index": { verb: "get"; meta: typeof import("../src/routes/_index/+meta.json"); };
 	"/api/auth/callback": { verb: "get"; };
 	"/api/auth/sign-out": { verb: "get"; };
-	"/sign-in": { verb: "get"; meta: typeof import("../src/routes/sign-in/+meta.json"); };
+	"/sign-in": { verb: "get" | "post"; meta: typeof import("../src/routes/sign-in/+meta.json"); };
 	"/sign-in/api/magic-link": { verb: "post"; };
 	"/sign-in/api/oauth": { verb: "post"; };
 	"/sign-in/api/password": { verb: "post"; };

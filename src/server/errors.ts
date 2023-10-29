@@ -12,7 +12,10 @@ export const redirectToPath = <Path extends RoutePath>(
   params: RouteParams<Path>,
 ) => {
   const url = buildPath(path, params);
-  return Response.redirect(url, 301);
+  return new Response(null, {
+    status: 302,
+    headers: { location: String(url) },
+  });
 };
 
 export const invalidRequestError = (issues: Issues) => {
