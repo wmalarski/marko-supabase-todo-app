@@ -20,7 +20,15 @@ const getCookieStorage = ({
   return {
     getItem(key: string) {
       const cookie = context.request.headers.get("cookie");
-      return cookie ? parse(cookie)?.[key] : null;
+
+      if (!cookie) {
+        return null;
+      }
+
+      const parsed = parse(cookie);
+      const value = parsed[key];
+
+      return value;
     },
     removeItem(key: string) {
       saveCookie(serialize(key, "", { ...options, maxAge: -1 }));

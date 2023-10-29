@@ -125,11 +125,7 @@ export const passwordSignUp = async (context: MarkoRun.Context) => {
 };
 
 export const signOut = async (context: MarkoRun.Context) => {
-  console.log({ context });
-
-  const response = await context.supabase.auth.signOut();
-
-  console.log({ response });
+  await context.supabase.auth.signOut();
 
   return redirectToPath({ path: "/" });
 };
@@ -153,4 +149,26 @@ export const callback = async (context: MarkoRun.Context) => {
   }
 
   return redirectToPath({ path: "/" });
+};
+
+export const anonymousMiddleware: MarkoRun.Handler = async (context, next) => {
+  const session = await context.supabase.auth.getSession();
+
+  if (session.data.session) {
+    return redirectToPath({ path: "/todos" });
+  }
+
+  return next();
+};
+
+export const protectedMiddleware: MarkoRun.Handler = async (context, next) => {
+  const session = await context.supabase.auth.getSession();
+
+  if (session.error || !session.data.session) {
+    return redirectToPath({ path: "/sign-in" });
+  }
+
+  context.session = session.data.session || null;
+
+  return next();
 };

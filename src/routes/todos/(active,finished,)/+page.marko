@@ -1,10 +1,6 @@
-<protected-navbar />
+<protected-navbar/>
 <main class="flex flex-col gap-8 max-w-md justify-center w-full mx-auto">
   <pre>
-${" "}${JSON.stringify(
-    { session: $global.session, p: $global.params },
-    null,
-    2
-  )}
+${" "}${JSON.stringify({ session: $global.session, p: $global.route }, null, 2)}
 </pre>
 </main>
