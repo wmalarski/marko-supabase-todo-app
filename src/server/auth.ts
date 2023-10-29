@@ -10,13 +10,13 @@ const getCallbackUrl = (context: MarkoRun.Context) => {
 
 type SignInArgs = {
   context: MarkoRun.Context;
-  decoded: ReturnType<typeof decode>;
+  formData: FormData;
 };
 
-export const magicLinkSignIn = async ({ context, decoded }: SignInArgs) => {
+export const magicLinkSignIn = async ({ context, formData }: SignInArgs) => {
   const parsed = await safeParseAsync(
     object({ email: string([email()]) }),
-    decoded,
+    decode(formData),
   );
 
   if (!parsed.success) {
@@ -41,10 +41,10 @@ export const magicLinkSignIn = async ({ context, decoded }: SignInArgs) => {
   });
 };
 
-export const oauthSignIn = async ({ context, decoded }: SignInArgs) => {
+export const oauthSignIn = async ({ context, formData }: SignInArgs) => {
   const parsed = await safeParseAsync(
     object({ provider: literal("google") }),
-    decoded,
+    decode(formData),
   );
 
   if (!parsed.success) {
@@ -69,10 +69,10 @@ export const oauthSignIn = async ({ context, decoded }: SignInArgs) => {
   });
 };
 
-export const passwordSignIn = async ({ context, decoded }: SignInArgs) => {
+export const passwordSignIn = async ({ context, formData }: SignInArgs) => {
   const parsed = await safeParseAsync(
     object({ email: string([email()]), password: string() }),
-    decoded,
+    decode(formData),
   );
 
   if (!parsed.success) {

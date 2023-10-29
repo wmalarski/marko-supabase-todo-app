@@ -1,4 +1,3 @@
-import { decode } from "decode-formdata";
 import {
   magicLinkSignIn,
   oauthSignIn,
@@ -7,15 +6,15 @@ import {
 import { buildSearchParams } from "../../utils/searchParams";
 
 export const POST: MarkoRun.Handler = async (context) => {
-  const decoded = decode(await context.request.formData());
+  const formData = await context.request.formData();
 
-  switch (decoded.action) {
+  switch (formData.get("action")) {
     case "password":
-      return passwordSignIn({ context, decoded });
+      return passwordSignIn({ context, formData });
     case "oauth":
-      return oauthSignIn({ context, decoded });
+      return oauthSignIn({ context, formData });
     case "magic-link":
-      return magicLinkSignIn({ context, decoded });
+      return magicLinkSignIn({ context, formData });
   }
 
   const params = buildSearchParams({ message: "Invalid request" });

@@ -5,6 +5,7 @@
     "formdata",
     "marko",
     "pkce",
+    "Postgrest",
     "supabase",
     "tailwindcss",
     "todos",

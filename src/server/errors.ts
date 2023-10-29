@@ -1,5 +1,6 @@
 import type { Issues } from "valibot";
 import { buildPath, BuildPathArgs, type RoutePath } from "../utils/paths";
+import { buildSearchParams } from "../utils/searchParams";
 
 export const unauthorizedError = () => {
   return new Response(JSON.stringify({ error: "Unauthorized" }), {
@@ -11,6 +12,24 @@ export const redirectToPath = <Path extends RoutePath>(
   args: BuildPathArgs<Path>,
 ) => {
   const location = buildPath(args);
+  return new Response(null, { status: 302, headers: { location } });
+};
+
+type RedirectCurrentWithQueryArgs = {
+  context: MarkoRun.Context;
+  query?: Record<string, unknown>;
+  variant: "success" | "error";
+};
+
+export const redirectCurrentWithQuery = ({
+  context,
+  query,
+  variant,
+}: RedirectCurrentWithQueryArgs) => {
+  const location = `${context.url.pathname}?${buildSearchParams({
+    ...query,
+    variant,
+  })}`;
   return new Response(null, { status: 302, headers: { location } });
 };
 

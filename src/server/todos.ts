@@ -1,3 +1,12 @@
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
+import { decode } from "decode-formdata";
+import { boolean, object, safeParseAsync, string } from "valibot";
+import {
+  invalidRequestError,
+  redirectCurrentWithQuery,
+  unauthorizedError,
+} from "./errors";
+
 type SelectTasksArgs = {
   context: MarkoRun.Context;
   limit: number;
@@ -21,57 +30,109 @@ export const selectTasks = async ({
     : paginated;
 };
 
-type DeleteTaskArgs = {
+type BuildResponseArgs = {
   context: MarkoRun.Context;
-  id: string;
+  result: PostgrestSingleResponse<unknown>;
 };
 
-export const deleteTask = async ({ context, id }: DeleteTaskArgs) => {
-  return context.supabase.from("Task").delete().eq("id", id);
+const buildResponse = ({ context, result }: BuildResponseArgs) => {
+  if (result.error) {
+    return redirectCurrentWithQuery({
+      context,
+      query: { message: result.error.message },
+      variant: "error",
+    });
+  }
+
+  return redirectCurrentWithQuery({
+    context,
+    query: { message: "Success" },
+    variant: "success",
+  });
 };
 
-type UpdateTaskArgs = {
+type TaskMutationArgs = {
   context: MarkoRun.Context;
-  id: string;
-  text: string;
-  finished: boolean;
+  formData: FormData;
 };
 
-export const updateTask = async ({
-  context,
-  id,
-  finished,
-  text,
-}: UpdateTaskArgs) => {
-  return context.supabase.from("Task").update({ finished, text }).eq("id", id);
+export const deleteTask = async ({ context, formData }: TaskMutationArgs) => {
+  const parsed = await safeParseAsync(
+    object({ id: string() }),
+    decode(formData),
+  );
+
+  if (!parsed.success) {
+    return invalidRequestError(parsed.issues);
+  }
+
+  const result = await context.supabase
+    .from("Task")
+    .delete()
+    .eq("id", parsed.output.id);
+
+  return buildResponse({ context, result });
 };
 
-type UpdateAllTasksArgs = {
-  context: MarkoRun.Context;
-  finished: boolean;
+export const updateTask = async ({ context, formData }: TaskMutationArgs) => {
+  const parsed = await safeParseAsync(
+    object({ text: string(), finished: boolean(), id: string() }),
+    decode(formData, { booleans: ["finished"] }),
+  );
+
+  if (!parsed.success) {
+    return invalidRequestError(parsed.issues);
+  }
+
+  const result = await context.supabase
+    .from("Task")
+    .update({ finished: parsed.output.finished, text: parsed.output.text })
+    .eq("id", parsed.output.id);
+
+  return buildResponse({ context, result });
 };
 
 export const updateAllTasks = async ({
   context,
-  finished,
-}: UpdateAllTasksArgs) => {
-  return context.supabase.from("Task").update({ finished });
-};
+  formData,
+}: TaskMutationArgs) => {
+  const parsed = await safeParseAsync(
+    object({ finished: boolean() }),
+    decode(formData, { booleans: ["finished"] }),
+  );
 
-type InsertTaskArgs = {
-  context: MarkoRun.Context;
-  text: string;
-  finished: boolean;
-  userId: string;
-};
+  if (!parsed.success) {
+    return invalidRequestError(parsed.issues);
+  }
 
-export const insertTask = async ({
-  context,
-  finished,
-  text,
-  userId,
-}: InsertTaskArgs) => {
-  return context.supabase
+  const result = await context.supabase
     .from("Task")
-    .insert({ finished, text, user_id: userId });
+    .update({ finished: parsed.output.finished });
+
+  return buildResponse({ context, result });
+};
+
+export const insertTask = async ({ context, formData }: TaskMutationArgs) => {
+  const userId = context.session?.user.id;
+
+  if (!userId) {
+    return unauthorizedError();
+  }
+
+  const parsed = await safeParseAsync(
+    object({ text: string(), finished: boolean() }),
+    decode(formData, { booleans: ["finished"] }),
+  );
+
+  if (!parsed.success) {
+    return invalidRequestError(parsed.issues);
+  }
+
+  const result = await context.supabase.from("Task").insert({
+    finished: parsed.output.finished,
+    text: parsed.output.text,
+    user_id: userId,
+  });
+
+  return buildResponse({ context, result });
 };
