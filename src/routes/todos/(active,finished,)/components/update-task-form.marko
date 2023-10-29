@@ -1,39 +1,51 @@
 export interface Input {
-  id: string;
-  text: string;
-  finished: boolean;
+  id: number;
+  text: string | null;
+  finished: boolean | null;
 }
 
-<form class="flex flex-col gap-6" method="POST">
-  <input type="hidden" name="action" value="insert">
+<let/isDirty=false/>
 
-  <div class="flex gap-4">
-    <app-input>
-      <@label for="finished" class="sr-only">
-        Finished
-      </@label>
-      <@checkbox id="finished" name="finished" type="checkbox"/>
-    </app-input>
+<const/onChange=(
+  () => {
+    isDirty = true;
+  }
+)/>
 
-    <app-input class="flex-grow">
-      <@label for="text" class="sr-only">
-        Text
-      </@label>
-      <@text
-        placeholder="Text"
-        variant="bordered"
-        id="text"
-        name="text"
-        type="text"
-      />
-    </app-input>
+<form class="flex gap-2 items-center flex-grow" method="POST" onChange=onChange>
+  <input type="hidden" name="action" value="update">
+  <input type="hidden" name="id" value=input.id>
 
-    <app-button color="secondary">
-      Update
-    </app-button>
+  <app-input>
+    <@label for="finished" class="sr-only">
+      Finished
+    </@label>
+    <@checkbox
+      id="finished"
+      name="finished"
+      value=(input.finished ? "on" : "off")
+    />
+  </app-input>
 
-    <app-button color="warning" type="reset">
-      Reset
-    </app-button>
-  </div>
+  <app-input class="flex-grow">
+    <@label for="text" class="sr-only">
+      Text
+    </@label>
+    <@text
+      placeholder="Text"
+      variant="bordered"
+      id="text"
+      name="text"
+      type="text"
+      value=input.text
+    />
+  </app-input>
+
+  <app-button color="secondary" disabled=!isDirty>
+    Update
+  </app-button>
+
+  <app-button color="warning" type="reset" disabled=!isDirty>
+    Reset
+  </app-button>
 </form>

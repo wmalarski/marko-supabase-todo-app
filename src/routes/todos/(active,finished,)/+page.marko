@@ -1,6 +1,6 @@
 import { selectTasks } from "../../../server/todos";
 <protected-navbar/>
-<main class="flex flex-col gap-8 max-w-md justify-center w-full mx-auto">
+<main class="flex flex-col gap-8 max-w-xl justify-center w-full mx-auto">
   $ const finished = (
     $global.route.endsWith("finished")
       ? true
@@ -16,9 +16,24 @@ import { selectTasks } from "../../../server/todos";
     finished,
   });
 
+  <insert-task-form/>
+
   <await(tasks)>
     <@then|tasks|>
-      <pre>${JSON.stringify(tasks, null, 2)}</pre>
+      <if(tasks.data)>
+        <ul>
+          <for|task| of=tasks.data>
+            <li class="flex gap-2" key=String(task.id)>
+              <update-task-form
+                id=task.id
+                finished=task.finished
+                text=task.text
+              />
+              <delete-task-form id=task.id/>
+            </li>
+          </for>
+        </ul>
+      </if>
     </@then>
   </await>
 </main>
