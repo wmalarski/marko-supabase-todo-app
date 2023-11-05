@@ -151,7 +151,7 @@ export const signOut = async (context: MarkoRun.Context) => {
   return redirectToPath({ path: "/" });
 };
 
-export const callback = async (context: MarkoRun.Context) => {
+export const callback: MarkoRun.Handler = async (context) => {
   const parsed = await safeParseAsync(
     object({ code: string() }),
     Object.fromEntries(context.url.searchParams.entries()),
@@ -165,15 +165,15 @@ export const callback = async (context: MarkoRun.Context) => {
     });
   }
 
-  const response = await context.supabase.auth.exchangeCodeForSession(
+  const result = await context.supabase.auth.exchangeCodeForSession(
     parsed.output.code,
   );
 
-  if (response.error) {
-    return redirectToPath({ path: "/todos" });
+  if (result.error) {
+    return redirectToPath({ path: "/" });
   }
 
-  return redirectToPath({ path: "/" });
+  return redirectToPath({ path: "/todos" });
 };
 
 export const anonymousMiddleware: MarkoRun.Handler = async (context, next) => {

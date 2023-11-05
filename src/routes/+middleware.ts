@@ -15,7 +15,7 @@ const handler: MarkoRun.Handler = async (context, next) => {
   const response = await next();
 
   cookies.forEach((cookie) => {
-    response.headers.append("set-cookie", cookie);
+    response.headers.append("Set-Cookie", cookie);
   });
 
   return response;
