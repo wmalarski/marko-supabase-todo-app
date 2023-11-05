@@ -1,13 +1,29 @@
-# Thanks for checking out Marko
+# Marko Run Supabase Todo App
 
-# Installation
+## TODO List
 
-```
-npx @marko/create marko-app --template basic-ts
-cd marko-app
+- [x] styles setup: `tailwind`, `daisyui`, `class-variance-authority`
+- [x] reusable components using attribute tags
+- [x] tags api preview
+- [x] supabase email/password sign up and sign in
+- [x] supabase magic code sign in
+- [x] supabase oauth sign in
+- [x] supabase pkce auth flow
+- [x] todo list with: update/delete/create/list
+- [x] server side supabase data fetching with row security enabled
+- [x] request validation using `decode-formdata` and `valibot`
+- [x] manual progressive enhancement for all actions
+- [x] works with javascript disabled
+- [x] [typescript utility `buildPath`](src/utils/paths.ts) for building correct navigation paths
+
+## Installation
+
+```graphql
 npm install
 npm run dev
 ```
+
+[Supabase database schema](src/db/setup.sql)
 
 ## Environmental variables
 

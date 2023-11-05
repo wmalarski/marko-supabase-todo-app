@@ -13,7 +13,7 @@ export interface Input {
     const formData = new FormData(event.target as HTMLFormElement);
 
     input.onUpdate({
-      finished: formData.get("finished") === "true",
+      finished: formData.get("finished") === "on",
       text: formData.get("text") as string,
     });
 
