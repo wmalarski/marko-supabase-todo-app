@@ -5,21 +5,21 @@
   "type": "module",
   "dependencies": {
     "@marko/tags-api-preview": "^0.7.2",
-    "@supabase/supabase-js": "^2.39.0",
+    "@supabase/supabase-js": "^2.39.1",
     "class-variance-authority": "^0.7.0",
     "cookie": "^0.6.0",
-    "decode-formdata": "^0.4.0",
-    "marko": "^5.32.0",
-    "tailwind-merge": "^2.0.0",
-    "valibot": "^0.21.0"
+    "decode-formdata": "^0.5.0",
+    "marko": "^5.32.3",
+    "tailwind-merge": "^2.2.0",
+    "valibot": "^0.25.0"
   },
   "devDependencies": {
-    "@marko/run": "^0.3.2",
+    "@marko/run": "^0.4.1",
     "@types/cookie": "^0.6.0",
     "autoprefixer": "^10.4.16",
-    "daisyui": "^4.4.17",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5"
+    "daisyui": "^4.4.24",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0"
   },
   "private": true,
   "scripts": {
